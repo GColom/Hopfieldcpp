@@ -14,10 +14,10 @@ int main()
 
 	H.init_on_corrupted_pattern(0, 0.2);
 
-	H.glauber_evolve(10000);
+	H.glauber_evolve(100000);
 
-	std::cout<<H.overlap_max()<<std::endl;
-	std::cout<<H.overlap_argmax()<<std::endl;
+	auto max = H.max_overlap();
+	std::cout<<max.first<<"\t"<<max.second<<std::endl;
 
 	auto finish = std::chrono::steady_clock::now();
 
