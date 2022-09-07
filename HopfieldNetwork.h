@@ -215,7 +215,7 @@ class HopfieldNetwork
 	 * throws an exception.
 	 */
 	{
-		int newM = int(std::round(newalpha));
+		int newM = int(std::round(newalpha * this->N));
 		set_M(newM);
 	}
 
