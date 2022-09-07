@@ -60,9 +60,6 @@ class HopfieldNetwork
 /**
  * @brief      Implementation of a Hopfield Network of binary neurons (spins).
  *
- * @param[in]  <unnamed>  { parameter_description }
- *
- * @return     { description_of_the_return_value }
  */
 {
 	private:
@@ -116,7 +113,7 @@ class HopfieldNetwork
 	void init_on_corrupted_pattern(spin_pattern pattern, double probability)
 	//! 
 	//! Initialise the spins with a corrupted version of the pattern pointed by pattern, where each of the spins
-	//! may have been flipped with probability probability.
+	//! may have been flipped with probability ```probability```.
 	//! 
 	{
 		#pragma omp parallel for num_threads(N_PARALLEL_THREADS)
@@ -173,6 +170,15 @@ class HopfieldNetwork
 	}
 
 	void set_M(int newM)
+	/**
+	 * Set a new value for the number of stored patterns. Depending on the value of newM, one of the following three cases can apply.
+	 * 
+	 * If newM = M, nothing is changed, if newM < M, (M - newM) patterns are popped back from
+	 * the tail of the patterns vector. If newM > M, (newM-M) new random patterns are pushed back to the patterns vector.
+	 * 
+	 * Calling this method falsifies the internal switch ```initialised_weights``` so that launching a simulation without calling the function build_weights()
+	 * throws an exception.
+	 */
 	{
 		int deltaM = newM - this->M;
 		if(deltaM > 0)
@@ -199,6 +205,15 @@ class HopfieldNetwork
 	}
 
 	void set_alpha(double newalpha)
+	/**
+	 * Set a new value for the load parameter \f$ \alpha \f$. Defining newM = round(newalpha * N), one of the following three cases can apply.
+	 * 
+	 * If newM = M, nothing is changed, if newM < M, (M - newM) patterns are popped back from
+	 * the tail of the patterns vector. If newM > M, (newM-M) new random patterns are pushed back to the patterns vector.
+	 * 
+	 * Calling this method falsifies the internal switch ```initialised_weights``` so that launching a simulation without calling the function build_weights()
+	 * throws an exception.
+	 */
 	{
 		int newM = int(std::round(newalpha));
 		set_M(newM);
@@ -229,7 +244,7 @@ class HopfieldNetwork
 	// Evolution step function
 	void glauber_evolve(unsigned int niter, unsigned int nflips = N_PARALLEL_THREADS)
 	/**
-	 * Evolve the network via 
+	 * Evolve the network using a parallel version of the Glauber algorithm.
 	 */
 	{
 
@@ -272,6 +287,10 @@ class HopfieldNetwork
 	}
 
 	std::pair<int, double> max_overlap()
+	/**
+	 * Return a std::pair<int, double> containing the index of the most condensed pattern and the corresponding Mattis magnetisation.
+	 * They can be easily accessed through the .first and .second members of the std::pair.
+	 */
 	{
 		auto overlaps = this->overlaps();
 		int argmax = std::distance(overlaps.begin(), std::max_element(overlaps.begin(), overlaps.end()));
