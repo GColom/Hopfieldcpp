@@ -9,12 +9,12 @@
  * along with some useful functions to work with it.
  */
 
-#include<cmath>
-#include<random>
-#include<vector>
-#include<algorithm>
-#include<utility>
-#include<stdexcept>
+#include <algorithm>
+#include <cmath>
+#include <random>
+#include <stdexcept>
+#include <utility>
+#include <vector>
 
 #ifndef N_PARALLEL_THREADS
 //! The number of parallel threads used to run the program defaults to 1, but can be set at compile time depending on the
@@ -104,6 +104,16 @@ class HopfieldNetwork
 		spin_picker = std::uniform_int_distribution<int>(0, N-1);
 	}
 
+	~HopfieldNetwork()
+	/**
+	 * Destroy a Hopfield Network instance. A handwritten destructor is needed for the raw pointers.
+	 */
+	{
+		alpha = 0;
+		delete[] spins;
+		for(int i = 0; i < N; ++i) delete[] W[i];
+		delete[] W;
+	}
 	void init_spins_randomly()
 	//!
 	//! Initialise all the spins in a random configuration, using random_spin().

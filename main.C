@@ -6,13 +6,13 @@ int main()
 {
 	auto start = std::chrono::steady_clock::now();
 
-	HopfieldNetwork H(10000, 0.02, 0.01);
+	HopfieldNetwork H(1000, 0.02, 0.01);
 	std::cout<<"Network instantiated."<<std::endl;
 	H.build_random_patterns();
 
-for (int step = 1; step < 10; ++step)
+for (int step = 5; step > 0; --step)
 {
-	double cur_alpha = step*0.02;
+	double cur_alpha = step*0.03;
 	std::cout<<"Ramping alpha to "<<cur_alpha<<std::endl;
 	H.set_alpha(cur_alpha);
 	std::cout<<"Building weights..."<<std::endl;
@@ -20,7 +20,7 @@ for (int step = 1; step < 10; ++step)
 	std::cout<<"Init corrupted pattern..."<<std::endl;
 	H.init_on_corrupted_pattern(0, 0.2);
 	std::cout<<"Evolving system..."<<std::endl;
-	H.glauber_evolve(100000);
+	H.glauber_evolve(5000000);
 	auto ov = H.max_overlap();
 	std::cout<<"argmax, max"<<std::endl;
 	std::cout<<ov.first<<", "<<ov.second<<std::endl;
