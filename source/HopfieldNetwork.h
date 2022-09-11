@@ -105,6 +105,9 @@
  * 
  * Where the various lines correspond, from top to bottom, to values of \f$\alpha = 0,\, \mathellipsis,\, 0.125\f$ in increments of \f$0.025\f$, and
  * dashed lines indicate the vanishing temperature for the amplitude at the given \f$\alpha\f$.
+ * 
+ * By inspecting the graph we can clearly see that for low levels of noise the Network has recalls very close to 1, thus proving that an amount of noise
+ * can be beneficial in Network operation by allowing it to better explore its configuration space, but without detriment to the quality of its functioning.
  */
 
 

@@ -2,7 +2,7 @@ project(HopfieldNetwork)
 cmake_minimum_required(VERSION 3.0.0)
 find_package(OpenMP REQUIRED)
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../build/)
-add_executable(example ./main.C)
+add_executable(example ./example.C)
 
 if(NOT DEFINED N_PARALLEL_THREADS)
 	execute_process (COMMAND bash -c "nproc" OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE NPROC)
