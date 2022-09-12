@@ -212,6 +212,21 @@ class HopfieldNetwork
 		for(int i = 0; i < N; ++i) delete[] W[i];
 		delete[] W;
 	}
+	
+	// Getters
+	//!
+	//! Getter for the network size.
+	int get_N() {return N;};
+	//!
+	//! Getter for the load parameter.
+	double get_alpha(){return alpha;};
+	//!
+	//! Getter for the temperature.
+	double get_T(){return T;};
+	//!
+	//! Getter for the number of patterns.
+	int get_M(){return M;};
+
 	void init_spins_randomly()
 	//!
 	//! Initialise all the spins in a random configuration, using random_spin().
@@ -352,7 +367,8 @@ class HopfieldNetwork
 	// Evolution step function
 	void glauber_evolve(unsigned int niter, unsigned int nflips = N_PARALLEL_THREADS)
 	/**
-	 * Evolve the network using a parallel version of the Glauber algorithm.
+	 * Evolve the network using a parallel version of the Glauber algorithm. Run ```niter``` evolution steps, in each of which ```nflips``` spins are evolved,
+	 * default value is ```N_PARALLEL_THREADS```. 
 	 */
 	{
 
@@ -416,6 +432,15 @@ class HopfieldNetwork
 		std::vector<double> overlaps(N, 0.);
 		for(int o = 0; o < M; ++o) overlaps[o] = overlap(spins, patterns[o].data(), N);
 		return overlaps;
+	}
+
+	double cur_overlap(int i)
+	/**
+	 * Return the overlap between the current spin configuration of the network (the one stored in ```this->spins```) and the i-th pattern stored in
+	 * the network.
+	 */
+	{
+		return overlap(this->spins, patterns[i].data(), this->N);
 	}
 
 	std::pair<int, double> max_overlap()
